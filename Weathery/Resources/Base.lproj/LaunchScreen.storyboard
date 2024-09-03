@@ -23,12 +23,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qLO-vy-m56">
+                                <rect key="frame" x="20" y="757.66666666666663" width="353" height="45.333333333333371"/>
+                                <string key="text">Minimalist weather app.
+Black and white, pure functionality.</string>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qLO-vy-m56" secondAttribute="trailing" constant="20" id="4dt-4l-PJL"/>
+                            <constraint firstItem="qLO-vy-m56" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ILl-9O-2Yt"/>
                             <constraint firstItem="rc3-ub-Nxe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Id9-Dp-gDH"/>
                             <constraint firstItem="rc3-ub-Nxe" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="gt3-XL-GI2"/>
+                            <constraint firstItem="qLO-vy-m56" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-15" id="zw4-3u-HQo"/>
                         </constraints>
                     </view>
                 </viewController>
