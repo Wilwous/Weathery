@@ -60,7 +60,7 @@ final class CitiesViewController: UIViewController {
     // MARK: - Private Methods
     
     private func fetchWeatherForCities() {
-        let cities = ["Москва", "Тюмень", "Калуга", "Черногория"]
+        let cities = ["Москва", "Тюмень", "Калуга", "Будва"]
         for city in cities {
             viewModel.fetchWeather(for: city)
         }
@@ -110,16 +110,18 @@ final class CitiesViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource, UITableViewDelegate
 
-extension CitiesViewController: UITableViewDataSource {
-    
+extension CitiesViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchController.isActive ? searchResults.count : weatherData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CityWeatherCell", for: indexPath) as? CityWeatherCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: "CityWeatherCell",
+            for: indexPath
+        ) as? CityWeatherCell else {
             return UITableViewCell()
         }
         
@@ -128,11 +130,20 @@ extension CitiesViewController: UITableViewDataSource {
         
         return cell
     }
-}
-
-// MARK: - UITableViewDelegate
-
-extension CitiesViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCity = searchController.isActive ? searchResults[indexPath.row] : weatherData[indexPath.row]
+        
+        if searchController.isActive {
+            searchController.isActive = false
+            weatherData.append(selectedCity)
+            tableView.reloadData()
+        } else {
+            let detailVC = WeatherDetailViewController()
+            detailVC.cityName = selectedCity.name
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+    }
     
     func tableView(
         _ tableView: UITableView,
