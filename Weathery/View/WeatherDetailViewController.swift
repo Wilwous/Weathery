@@ -215,11 +215,15 @@ final class WeatherDetailViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.cityLabel.text = weatherData.name
                 self?.temperatureLabel.text = "\(Int(weatherData.main.temp))°C"
+                
+                let isDaytime = self?.viewModel.isCurrentWeatherDaytime(for: weatherData) ?? true
                 self?.weatherIconImageView.image = UIImage(
                     named: self?.viewModel.iconName(
                         for: weatherData.weather.first?.main ?? "",
-                        isDaytime: WeatherUtils.isCurrentWeatherDaytime(for: weatherData)) ?? "default_icon"
+                        isDaytime: isDaytime
+                    ) ?? "default_icon"
                 )
+                
                 self?.feelsLikeLabel.text = "Ощущается как: \(Int(weatherData.main.feels_like))°C"
                 self?.pressureLabel.text = "Давление: \(weatherData.main.pressure) hPa"
                 self?.humidityLabel.text = "Влажность: \(weatherData.main.humidity)%"

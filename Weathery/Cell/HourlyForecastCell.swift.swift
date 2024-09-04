@@ -69,7 +69,8 @@ final class HourlyForecastCell: UICollectionViewCell {
         temperatureLabel.text = "\(Int(forecast.main.temp))°C"
         
         if let weatherCondition = forecast.weather.first?.main {
-            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: WeatherUtils.isForecastDaytime(forecast: forecast))
+            let isDaytime = viewModel.isForecastDaytime(forecast: forecast)
+            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: isDaytime)
             iconImageView.image = UIImage(named: iconName)
         }
     }

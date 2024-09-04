@@ -61,7 +61,8 @@ final class CityWeatherCell: UITableViewCell {
         temperatureLabel.text = "\(Int(data.main.temp))°C"
         
         if let weatherCondition = data.weather.first?.main {
-            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: WeatherUtils.isCurrentWeatherDaytime(for: data))
+            let isDaytime = viewModel.isCurrentWeatherDaytime(for: data)
+            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: isDaytime)
             iconImageView.image = UIImage(named: iconName)
         }
     }
