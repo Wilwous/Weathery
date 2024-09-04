@@ -61,17 +61,9 @@ final class CityWeatherCell: UITableViewCell {
         temperatureLabel.text = "\(Int(data.main.temp))°C"
         
         if let weatherCondition = data.weather.first?.main {
-            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: isDaytime(data: data))
+            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: WeatherUtils.isCurrentWeatherDaytime(for: data))
             iconImageView.image = UIImage(named: iconName)
         }
-    }
-    
-    private func isDaytime(data: WeatherData) -> Bool {
-        let currentTime = Date(timeIntervalSince1970: TimeInterval(data.dt))
-        let sunrise = Date(timeIntervalSince1970: TimeInterval(data.sys.sunrise))
-        let sunset = Date(timeIntervalSince1970: TimeInterval(data.sys.sunset))
-        
-        return currentTime >= sunrise && currentTime < sunset
     }
     
     // MARK: - Private Methods

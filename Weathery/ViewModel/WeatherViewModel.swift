@@ -9,7 +9,7 @@ import Foundation
 
 final class WeatherViewModel {
     
-    // MARK: - Сlosure
+    // MARK: - Closures
     
     var onWeatherDataUpdate: ((WeatherData) -> Void)?
     var onForecastDataUpdate: ((ForecastData) -> Void)?
@@ -40,6 +40,45 @@ final class WeatherViewModel {
             case .failure(let error):
                 self?.onError?(error)
             }
+        }
+    }
+    
+    func groupForecastsByDay(_ forecasts: [ForecastList]) -> [DayWeather] {
+        var groupedForecasts = [String: [ForecastList]]()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let weekdayFormatter = DateFormatter()
+        weekdayFormatter.locale = Locale(identifier: "ru_RU")
+        weekdayFormatter.dateFormat = "EEEE"
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        let sortedForecasts = forecasts.sorted {
+            dateFormatter.date(from: $0.dt_txt)! < dateFormatter.date(from: $1.dt_txt)!
+        }
+        
+        for forecast in sortedForecasts {
+            if let forecastDate = dateFormatter.date(from: forecast.dt_txt) {
+                if forecastDate >= today {
+                    let day = weekdayFormatter.string(from: forecastDate).capitalized
+                    groupedForecasts[day, default: []].append(forecast)
+                }
+            }
+        }
+        
+        let todayWeekdayIndex = calendar.component(.weekday, from: today) - 1
+        let orderedWeekdays = (0..<7).map { (todayWeekdayIndex + $0) % 7 }.map {
+            weekdayFormatter.weekdaySymbols[$0].capitalized
+        }
+        
+        return orderedWeekdays.compactMap { day in
+            if let forecasts = groupedForecasts[day] {
+                return DayWeather(day: day, hourlyForecasts: forecasts)
+            }
+            return nil
         }
     }
     

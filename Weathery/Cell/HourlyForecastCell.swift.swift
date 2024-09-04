@@ -69,21 +69,9 @@ final class HourlyForecastCell: UICollectionViewCell {
         temperatureLabel.text = "\(Int(forecast.main.temp))°C"
         
         if let weatherCondition = forecast.weather.first?.main {
-            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: isDaytime(forecast: forecast))
+            let iconName = viewModel.iconName(for: weatherCondition, isDaytime: WeatherUtils.isForecastDaytime(forecast: forecast))
             iconImageView.image = UIImage(named: iconName)
         }
-    }
-    
-    // MARK: - Private Methods
-    
-    private func isDaytime(forecast: ForecastList) -> Bool {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        if let date = dateFormatter.date(from: forecast.dt_txt) {
-            let hour = Calendar.current.component(.hour, from: date)
-            return hour >= 6 && hour < 18
-        }
-        return true
     }
     
     // MARK: - Setup View

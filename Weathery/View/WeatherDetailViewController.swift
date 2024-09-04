@@ -9,7 +9,7 @@ import UIKit
 
 final class WeatherDetailViewController: UIViewController {
     
-    // MARK: - Publice Properties
+    // MARK: - Public Properties
     
     var cityName: String?
     
@@ -19,6 +19,87 @@ final class WeatherDetailViewController: UIViewController {
     private var groupedForecastData: [DayWeather] = []
     
     // MARK: - UI Components
+    
+    private lazy var weatherIconImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
+    
+    private lazy var cityLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 25)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var temperatureLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 25)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var feelsLikeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 17)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var pressureLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 17)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var humidityLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 17)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var windSpeedLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 17)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var windDirectionLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 17)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var visibilityLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "UbuntuCondensed-Regular", size: 17)
+        label.textColor = .black
+        
+        return label
+    }()
+    
+    private lazy var weatherInfoContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 10
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.black.cgColor
+        
+        return view
+    }()
     
     private lazy var forecastTableView: UITableView = {
         let table = UITableView()
@@ -40,15 +121,14 @@ final class WeatherDetailViewController: UIViewController {
         setupNavigationBar()
         addElements()
         setupLayoutConstraint()
+        setupBindings()
         fetchWeatherAndForecast()
     }
     
     // MARK: - Setup View
     
     private func setupNavigationBar() {
-        let backButtonImage = UIImage(systemName: "chevron.left")?
-            .withRenderingMode(.alwaysTemplate)
-        
+        let backButtonImage = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysTemplate)
         let backButton = UIButton(type: .system)
         backButton.setImage(backButtonImage, for: .normal)
         backButton.tintColor = .black
@@ -64,16 +144,64 @@ final class WeatherDetailViewController: UIViewController {
     }
     
     private func addElements() {
-        [forecastTableView
+        view.addSubview(weatherInfoContainerView)
+        weatherInfoContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        [weatherIconImageView,
+         cityLabel,
+         temperatureLabel,
+         feelsLikeLabel,
+         pressureLabel,
+         humidityLabel,
+         windSpeedLabel,
+         windDirectionLabel,
+         visibilityLabel
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+            weatherInfoContainerView.addSubview($0)
         }
+        
+        view.addSubview(forecastTableView)
+        forecastTableView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func setupLayoutConstraint() {
         NSLayoutConstraint.activate([
-            forecastTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            weatherInfoContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+            weatherInfoContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            weatherInfoContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            weatherInfoContainerView.bottomAnchor.constraint(equalTo: visibilityLabel.bottomAnchor, constant: 15),
+            
+            weatherIconImageView.topAnchor.constraint(equalTo: weatherInfoContainerView.topAnchor, constant: 5),
+            weatherIconImageView.leadingAnchor.constraint(equalTo: weatherInfoContainerView.leadingAnchor, constant: 35),
+            weatherIconImageView.widthAnchor.constraint(equalToConstant: 120),
+            weatherIconImageView.heightAnchor.constraint(equalToConstant: 120),
+            
+            cityLabel.topAnchor.constraint(equalTo: weatherIconImageView.bottomAnchor),
+            cityLabel.centerXAnchor.constraint(equalTo: weatherIconImageView.centerXAnchor),
+            
+            temperatureLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 5),
+            temperatureLabel.centerXAnchor.constraint(equalTo: weatherIconImageView.centerXAnchor),
+            
+            feelsLikeLabel.topAnchor.constraint(equalTo: weatherInfoContainerView.topAnchor, constant: 15),
+            feelsLikeLabel.trailingAnchor.constraint(equalTo: weatherInfoContainerView.trailingAnchor, constant: -15),
+            
+            pressureLabel.topAnchor.constraint(equalTo: feelsLikeLabel.bottomAnchor, constant: 10),
+            pressureLabel.trailingAnchor.constraint(equalTo: weatherInfoContainerView.trailingAnchor, constant: -15),
+            
+            humidityLabel.topAnchor.constraint(equalTo: pressureLabel.bottomAnchor, constant: 10),
+            humidityLabel.trailingAnchor.constraint(equalTo: weatherInfoContainerView.trailingAnchor, constant: -15),
+            
+            windSpeedLabel.topAnchor.constraint(equalTo: humidityLabel.bottomAnchor, constant: 10),
+            windSpeedLabel.trailingAnchor.constraint(equalTo: weatherInfoContainerView.trailingAnchor, constant: -15),
+            
+            windDirectionLabel.topAnchor.constraint(equalTo: windSpeedLabel.bottomAnchor, constant: 10),
+            windDirectionLabel.trailingAnchor.constraint(equalTo: weatherInfoContainerView.trailingAnchor, constant: -15),
+            
+            visibilityLabel.topAnchor.constraint(equalTo: windDirectionLabel.bottomAnchor, constant: 10),
+            visibilityLabel.trailingAnchor.constraint(equalTo: weatherInfoContainerView.trailingAnchor, constant: -15),
+            
+            forecastTableView.topAnchor.constraint(equalTo: weatherInfoContainerView.bottomAnchor),
             forecastTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             forecastTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             forecastTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -82,14 +210,28 @@ final class WeatherDetailViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func fetchWeatherAndForecast() {
-        guard let cityName = cityName else { return }
-        
-        viewModel.fetchForecast(for: cityName)
+    private func setupBindings() {
+        viewModel.onWeatherDataUpdate = { [weak self] weatherData in
+            DispatchQueue.main.async {
+                self?.cityLabel.text = weatherData.name
+                self?.temperatureLabel.text = "\(Int(weatherData.main.temp))°C"
+                self?.weatherIconImageView.image = UIImage(
+                    named: self?.viewModel.iconName(
+                        for: weatherData.weather.first?.main ?? "",
+                        isDaytime: WeatherUtils.isCurrentWeatherDaytime(for: weatherData)) ?? "default_icon"
+                )
+                self?.feelsLikeLabel.text = "Ощущается как: \(Int(weatherData.main.feels_like))°C"
+                self?.pressureLabel.text = "Давление: \(weatherData.main.pressure) hPa"
+                self?.humidityLabel.text = "Влажность: \(weatherData.main.humidity)%"
+                self?.windSpeedLabel.text = "Скорость ветра: \(weatherData.wind.speed) м/с"
+                self?.windDirectionLabel.text = "Направление ветра: \(weatherData.wind.deg)°"
+                self?.visibilityLabel.text = "Видимость: \(weatherData.visibility) м"
+            }
+        }
         
         viewModel.onForecastDataUpdate = { [weak self] forecastData in
-            self?.groupForecastsByDay(forecastData.list)
             DispatchQueue.main.async {
+                self?.groupedForecastData = self?.viewModel.groupForecastsByDay(forecastData.list) ?? []
                 self?.forecastTableView.reloadData()
             }
         }
@@ -99,43 +241,10 @@ final class WeatherDetailViewController: UIViewController {
         }
     }
     
-    private func groupForecastsByDay(_ forecasts: [ForecastList]) {
-        var groupedForecasts = [String: [ForecastList]]()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        let weekdayFormatter = DateFormatter()
-        weekdayFormatter.locale = Locale(identifier: "ru_RU")
-        weekdayFormatter.dateFormat = "EEEE"
-        
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        
-        let sortedForecasts = forecasts.sorted {
-            dateFormatter.date(from: $0.dt_txt)! < dateFormatter.date(from: $1.dt_txt)!
-        }
-        
-        for forecast in sortedForecasts {
-            if let forecastDate = dateFormatter.date(from: forecast.dt_txt) {
-                if forecastDate >= today {
-                    let day = weekdayFormatter.string(from: forecastDate).capitalized
-                    groupedForecasts[day, default: []].append(forecast)
-                }
-            }
-        }
-        
-        let todayWeekdayIndex = calendar.component(.weekday, from: today) - 1
-        let orderedWeekdays = (0..<7).map { (todayWeekdayIndex + $0) % 7 }.map {
-            weekdayFormatter.weekdaySymbols[$0].capitalized
-        }
-        
-        self.groupedForecastData = orderedWeekdays.compactMap { day in
-            if let forecasts = groupedForecasts[day] {
-                return DayWeather(day: day, hourlyForecasts: forecasts)
-            }
-            return nil
-        }
+    private func fetchWeatherAndForecast() {
+        guard let cityName = cityName else { return }
+        viewModel.fetchWeather(for: cityName)
+        viewModel.fetchForecast(for: cityName)
     }
     
     // MARK: - Action
@@ -148,17 +257,11 @@ final class WeatherDetailViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension WeatherDetailViewController: UITableViewDataSource {
-    func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int
-    ) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groupedForecastData.count
     }
     
-    func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "DayForecastCell",
             for: indexPath

@@ -23,6 +23,7 @@
 		7C7060E52C8726E3002245D1 /* DayForecastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7060E42C8726E3002245D1 /* DayForecastCell.swift */; };
 		7C7060EB2C872C28002245D1 /* UbuntuCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C7060EA2C872C28002245D1 /* UbuntuCondensed-Regular.ttf */; };
 		7C7060ED2C875A98002245D1 /* DayWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7060EC2C875A98002245D1 /* DayWeather.swift */; };
+		7C7060F02C87D1C8002245D1 /* WeatherUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7060EF2C87D1C8002245D1 /* WeatherUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		7C7060E42C8726E3002245D1 /* DayForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastCell.swift; sourceTree = "<group>"; };
 		7C7060EA2C872C28002245D1 /* UbuntuCondensed-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UbuntuCondensed-Regular.ttf"; sourceTree = "<group>"; };
 		7C7060EC2C875A98002245D1 /* DayWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeather.swift; sourceTree = "<group>"; };
+		7C7060EF2C87D1C8002245D1 /* WeatherUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				7C4716B32C861E12008654F3 /* Application */,
+				7C7060EE2C87D1B0002245D1 /* Utilits */,
 				7C4716B72C861F07008654F3 /* Service */,
 				7C4716AA2C861D8A008654F3 /* Model */,
 				7C4716B52C861E47008654F3 /* View */,
@@ -161,6 +164,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		7C7060EE2C87D1B0002245D1 /* Utilits */ = {
+			isa = PBXGroup;
+			children = (
+				7C7060EF2C87D1C8002245D1 /* WeatherUtils.swift */,
+			);
+			path = Utilits;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -242,6 +253,7 @@
 				7C7060DB2C871E60002245D1 /* WeatherViewModel.swift in Sources */,
 				7C4716822C85DE9C008654F3 /* SceneDelegate.swift in Sources */,
 				7C7060DD2C871EDB002245D1 /* CitiesViewController.swift in Sources */,
+				7C7060F02C87D1C8002245D1 /* WeatherUtils.swift in Sources */,
 				7C7060D92C871E12002245D1 /* ForecastData.swift in Sources */,
 				7C7060ED2C875A98002245D1 /* DayWeather.swift in Sources */,
 				7C4716BB2C86218B008654F3 /* RequestConstants.swift in Sources */,
