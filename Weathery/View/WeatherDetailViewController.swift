@@ -261,6 +261,7 @@ final class WeatherDetailViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension WeatherDetailViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groupedForecastData.count
     }

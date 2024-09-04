@@ -88,6 +88,7 @@ final class DayForecastCell: UITableViewCell {
 // MARK: - UICollectionViewDataSource
 
 extension DayForecastCell: UICollectionViewDataSource {
+    
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int

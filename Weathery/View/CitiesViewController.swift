@@ -110,9 +110,10 @@ final class CitiesViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource, UITableViewDelegate
+// MARK: - UITableViewDataSource
 
-extension CitiesViewController: UITableViewDataSource, UITableViewDelegate {
+extension CitiesViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchController.isActive ? searchResults.count : weatherData.count
     }
@@ -127,25 +128,54 @@ extension CitiesViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CitiesViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCity = searchController.isActive ? searchResults[indexPath.row] : weatherData[indexPath.row]
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         
-        if searchController.isActive {
-            searchController.isActive = false
-            weatherData.append(selectedCity)
-            tableView.reloadData()
-        } else {
-            let detailVC = WeatherDetailViewController()
-            detailVC.cityName = selectedCity.name
-            navigationController?.pushViewController(detailVC, animated: true)
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
+            
+            if self.searchController.isActive {
+                self.searchResults.remove(at: indexPath.row)
+            } else {
+                self.weatherData.remove(at: indexPath.row)
+            }
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            completionHandler(true)
         }
+        
+        deleteAction.backgroundColor = .white
+        
+        let deleteButton = UIButton(type: .system)
+        deleteButton.setTitle("Удалить", for: .normal)
+        deleteButton.setTitleColor(.black, for: .normal)
+        deleteButton.titleLabel?.font = UIFont(name: "UbuntuCondensed-Regular", size: 17)
+        deleteButton.sizeToFit()
+        UIGraphicsBeginImageContext(deleteButton.bounds.size)
+        deleteButton.layer.render(in: UIGraphicsGetCurrentContext()!)
+        
+        let buttonImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        deleteAction.image = buttonImage
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = true
+        
+        return configuration
     }
 }
 
 // MARK: - UISearchResultsUpdating, UISearchBarDelegate
 
 extension CitiesViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             searchResults = []
